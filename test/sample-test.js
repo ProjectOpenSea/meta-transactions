@@ -1,14 +1,10 @@
 const { expect } = require("chai");
 
-describe("Greeter", function() {
-  it("Should return the new greeting once it's changed", async function() {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    
-    await greeter.deployed();
-    expect(await greeter.greet()).to.equal("Hello, world!");
+describe("ERC712MetaTransactionSample", function() {
+  it("Basic test", async function() {
+  const ERC721MetaTransactionSample = await hre.ethers.getContractFactory("ERC721MetaTransactionSample");
+  const erc721MetaTransactionSample = await ERC721MetaTransactionSample.deploy("Sample Token", "ST");
 
-    await greeter.setGreeting("Hola, mundo!");
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+  await erc721MetaTransactionSample.deployed();
   });
 });
