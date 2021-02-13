@@ -225,6 +225,9 @@ contract ERC721MetaTransactionSample is ERC721, ContextMixin, NativeMetaTransact
 
     constructor (string memory name_, string memory symbol_) ERC721(name_, symbol_) { }
 
+    /**
+     * This is used instead of msg.sender as transactions won't be sent by the original token owner, but by OpenSea.
+     */
     function _msgSender()
         internal
         override
@@ -232,5 +235,20 @@ contract ERC721MetaTransactionSample is ERC721, ContextMixin, NativeMetaTransact
         returns (address payable sender)
     {
         return ContextMixin.msgSender();
+    }
+
+    /**
+    * As another option for supporting trading without requiring meta transactions, override isApprovedForAll to whitelist OpenSea proxy accounts
+    */
+    function isApprovedForAll(
+        address _owner,
+        address _operator
+    ) public override view returns (bool isOperator) {
+        // Use 0x207Fa8Df3a17D96Ca7EA4f2893fcdCb78a304101 instead if your contract is ERC1155.
+        if (_operator == address(0x58807baD0B376efc12F5AD86aAc70E78ed67deaE)) {
+        return true;
+        }
+        
+        return ERC721.isApprovedForAll(_owner, _operator);
     }
 }
