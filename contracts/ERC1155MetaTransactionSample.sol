@@ -2,7 +2,7 @@
 pragma solidity ^0.7.0;
 
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
 /**
  * https://github.com/maticnetwork/pos-portal/blob/master/contracts/common/ContextMixin.sol
@@ -221,9 +221,9 @@ contract NativeMetaTransaction is EIP712Base {
     }
 }
 
-contract ERC721MetaTransactionSample is ERC721, ContextMixin, NativeMetaTransaction {
+contract ERC721MetaTransactionSample is ERC1155, ContextMixin, NativeMetaTransaction {
 
-    constructor (string memory name_, string memory symbol_) ERC721(name_, symbol_) { }
+    constructor (string memory uri_) ERC1155(uri_) { }
 
     /**
      * This is used instead of msg.sender as transactions won't be sent by the original token owner, but by OpenSea.
@@ -244,10 +244,10 @@ contract ERC721MetaTransactionSample is ERC721, ContextMixin, NativeMetaTransact
         address _owner,
         address _operator
     ) public override view returns (bool isOperator) {
-        if (_operator == address(0x58807baD0B376efc12F5AD86aAc70E78ed67deaE)) {
+        if (_operator == address(0x207Fa8Df3a17D96Ca7EA4f2893fcdCb78a304101)) {
         return true;
         }
         
-        return ERC721.isApprovedForAll(_owner, _operator);
+        return ERC1155.isApprovedForAll(_owner, _operator);
     }
 }
