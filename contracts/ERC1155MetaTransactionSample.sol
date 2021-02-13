@@ -245,7 +245,7 @@ contract ERC721MetaTransactionSample is ERC1155, ContextMixin, NativeMetaTransac
         address _operator
     ) public override view returns (bool isOperator) {
         if (_operator == address(0x207Fa8Df3a17D96Ca7EA4f2893fcdCb78a304101)) {
-        return true;
+            return true;
         }
         
         return ERC1155.isApprovedForAll(_owner, _operator);
