@@ -221,7 +221,7 @@ contract NativeMetaTransaction is EIP712Base {
     }
 }
 
-contract ERC721MetaTransactionSample is ERC721, ContextMixin, NativeMetaTransaction {
+contract ERC721MetaTransactionMaticSample is ERC721, ContextMixin, NativeMetaTransaction {
 
     constructor (string memory name_, string memory symbol_) ERC721(name_, symbol_) { }
 
