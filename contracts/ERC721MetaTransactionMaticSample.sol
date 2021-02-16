@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.7.0;
 
-import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 /**
@@ -158,7 +157,6 @@ contract NativeMetaTransaction is EIP712Base {
             from: userAddress,
             functionSignature: functionSignature
         });
-
         require(
             verify(userAddress, metaTx, sigR, sigS, sigV),
             "Signer and signature do not match"
@@ -223,7 +221,9 @@ contract NativeMetaTransaction is EIP712Base {
 
 contract ERC721MetaTransactionMaticSample is ERC721, ContextMixin, NativeMetaTransaction {
 
-    constructor (string memory name_, string memory symbol_) ERC721(name_, symbol_) { }
+    constructor (string memory name_, string memory symbol_) ERC721(name_, symbol_) {
+        _initializeEIP712(name_);
+    }
 
     /**
      * This is used instead of msg.sender as transactions won't be sent by the original token owner, but by OpenSea.

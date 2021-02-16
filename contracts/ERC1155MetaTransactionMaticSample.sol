@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.7.0;
 
-import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
 /**
@@ -223,7 +222,9 @@ contract NativeMetaTransaction is EIP712Base {
 
 contract ERC1155MetaTransactionMaticSample is ERC1155, ContextMixin, NativeMetaTransaction {
 
-    constructor (string memory uri_) ERC1155(uri_) { }
+    constructor (string memory uri_, string memory name_) ERC1155(uri_) {
+        _initializeEIP712(name_);
+    }
 
     /**
      * This is used instead of msg.sender as transactions won't be sent by the original token owner, but by OpenSea.
