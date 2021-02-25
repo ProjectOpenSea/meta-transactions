@@ -192,6 +192,8 @@ describe("ERC721MetaTransactionMaticSample", function() {
 
     let user = await wallet.getAddress();
 
+    expect(await erc721.isApprovedForAll(user, approvedContract.address)).to.equal(false);
+
     const metaTransaction = await erc721.executeMetaTransaction(user, functionSignature, r, s, v);
 
     expect(await erc721.isApprovedForAll(user, approvedContract.address)).to.equal(true);
