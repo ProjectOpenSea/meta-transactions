@@ -57,7 +57,7 @@ contract EIP712Base is Initializable {
 
     bytes32 internal constant EIP712_DOMAIN_TYPEHASH = keccak256(
         bytes(
-            "EIP712Domain(string name,string version,address verifyingContract,bytes32 salt)"
+            "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
         )
     );
     bytes32 internal domainSeperator;
