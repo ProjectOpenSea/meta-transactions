@@ -1858,8 +1858,8 @@ contract EIP712Base is Initializable {
     struct EIP712Domain {
         string name;
         string version;
-        uint256 chainId;
         address verifyingContract;
+        bytes32 salt;
     }
 
     string constant public ERC712_VERSION = "1";
@@ -1889,8 +1889,8 @@ contract EIP712Base is Initializable {
                 EIP712_DOMAIN_TYPEHASH,
                 keccak256(bytes(name)),
                 keccak256(bytes(ERC712_VERSION)),
-                getChainId(),
-                address(this)
+                address(this),
+                bytes32(getChainId())
             )
         );
     }
@@ -2028,7 +2028,7 @@ contract NativeMetaTransaction is EIP712Base {
     }
 }
 
-contract ERC721MetaTransactionMaticSample is ERC721, ContextMixin, NativeMetaTransaction {
+contract FlattenedERC721MetaTransactionMaticSample is ERC721, ContextMixin, NativeMetaTransaction {
 
     constructor (string memory name_, string memory symbol_) ERC721(name_, symbol_) {
         _initializeEIP712(name_);

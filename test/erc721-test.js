@@ -17,12 +17,12 @@ const domainType = [
     type: "string",
   },
   {
-    name: "chainId",
-    type: "uint256",
-  },
-  {
     name: "verifyingContract",
     type: "address",
+  },
+  {
+    name: "salt",
+    type: "bytes32",
   },
 ];
 
@@ -101,7 +101,6 @@ const getTransactionData = async (user, nonce, abi, domainData, params) => {
     primaryType: "MetaTransaction",
     message: message,
   };
-  console.log(dataToSign.types);
 
   const signature = sigUtil.signTypedData(ethUtils.toBuffer(user.privateKey), {
     data: dataToSign,
@@ -154,8 +153,8 @@ describe("ERC721MetaTransactionMaticSample", function () {
     let domainData = {
       name: name,
       version: version,
-      chainId: parseInt(chainId),
       verifyingContract: erc721.address,
+      salt: '0x' + chainId.toHexString().substring(2).padStart(64, '0'),
     };
 
     let { r, s, v, functionSignature } = await getTransactionData(
