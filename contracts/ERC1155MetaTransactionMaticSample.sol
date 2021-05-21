@@ -222,8 +222,12 @@ contract NativeMetaTransaction is EIP712Base {
 
 contract ERC1155MetaTransactionMaticSample is ERC1155, ContextMixin, NativeMetaTransaction {
 
-    constructor (string memory uri_) ERC1155(uri_) {
-        _initializeEIP712(uri_);
+    // Contract name
+    string public name;
+
+    constructor (string memory name_, string memory uri_) ERC1155(uri_) {
+        name = name_;
+        _initializeEIP712(name);
     }
 
     /**
