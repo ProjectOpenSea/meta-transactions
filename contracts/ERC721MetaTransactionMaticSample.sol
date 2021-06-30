@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
@@ -23,7 +23,7 @@ abstract contract ContextMixin {
                 )
             }
         } else {
-            sender = msg.sender;
+            sender = payable(msg.sender);
         }
         return sender;
     }
@@ -90,7 +90,7 @@ contract EIP712Base is Initializable {
         return domainSeperator;
     }
 
-    function getChainId() public pure returns (uint256) {
+    function getChainId() public view returns (uint256) {
         uint256 id;
         assembly {
             id := chainid()
@@ -121,7 +121,6 @@ contract EIP712Base is Initializable {
  * https://github.com/maticnetwork/pos-portal/blob/master/contracts/common/NativeMetaTransaction.sol
  */
 contract NativeMetaTransaction is EIP712Base {
-    using SafeMath for uint256;
     bytes32 private constant META_TRANSACTION_TYPEHASH = keccak256(
         bytes(
             "MetaTransaction(uint256 nonce,address from,bytes functionSignature)"
@@ -163,11 +162,11 @@ contract NativeMetaTransaction is EIP712Base {
         );
 
         // increase nonce for user (to avoid re-use)
-        nonces[userAddress] = nonces[userAddress].add(1);
+        nonces[userAddress] = nonces[userAddress] + 1;
 
         emit MetaTransactionExecuted(
             userAddress,
-            msg.sender,
+            payable(msg.sender),
             functionSignature
         );
 
@@ -232,7 +231,7 @@ contract ERC721MetaTransactionMaticSample is ERC721, ContextMixin, NativeMetaTra
         internal
         override
         view
-        returns (address payable sender)
+        returns (address sender)
     {
         return ContextMixin.msgSender();
     }

@@ -1,8 +1,8 @@
-// File @openzeppelin/contracts/introspection/IERC165.sol@v3.4.0
+// File @openzeppelin/contracts/utils/introspection/IERC165.sol@v4.1.0
 
 // SPDX-License-Identifier: MIT
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Interface of the ERC165 standard, as defined in the
@@ -26,9 +26,9 @@ interface IERC165 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC1155/IERC1155.sol@v3.4.0
+// File @openzeppelin/contracts/token/ERC1155/IERC1155.sol@v4.1.0
 
-pragma solidity >=0.6.2 <0.8.0;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Required interface of an ERC1155 compliant contract, as defined in the
@@ -129,33 +129,12 @@ interface IERC1155 is IERC165 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC1155/IERC1155MetadataURI.sol@v3.4.0
+// File @openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol@v4.1.0
 
-pragma solidity >=0.6.2 <0.8.0;
-
-/**
- * @dev Interface of the optional ERC1155MetadataExtension interface, as defined
- * in the https://eips.ethereum.org/EIPS/eip-1155#metadata-extensions[EIP].
- *
- * _Available since v3.1._
- */
-interface IERC1155MetadataURI is IERC1155 {
-    /**
-     * @dev Returns the URI for token type `id`.
-     *
-     * If the `\{id\}` substring is present in the URI, it must be replaced by
-     * clients with the actual token type ID.
-     */
-    function uri(uint256 id) external view returns (string memory);
-}
-
-
-// File @openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol@v3.4.0
-
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.8.0;
 
 /**
- * _Available since v3.1._
+ * @dev _Available since v3.1._
  */
 interface IERC1155Receiver is IERC165 {
 
@@ -207,304 +186,30 @@ interface IERC1155Receiver is IERC165 {
 }
 
 
-// File @openzeppelin/contracts/utils/Context.sol@v3.4.0
+// File @openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol@v4.1.0
 
-pragma solidity >=0.6.0 <0.8.0;
-
-/*
- * @dev Provides information about the current execution context, including the
- * sender of the transaction and its data. While these are generally available
- * via msg.sender and msg.data, they should not be accessed in such a direct
- * manner, since when dealing with GSN meta-transactions the account sending and
- * paying for execution may not be the actual sender (as far as an application
- * is concerned).
- *
- * This contract is only required for intermediate, library-like contracts.
- */
-abstract contract Context {
-    function _msgSender() internal view virtual returns (address payable) {
-        return msg.sender;
-    }
-
-    function _msgData() internal view virtual returns (bytes memory) {
-        this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
-        return msg.data;
-    }
-}
-
-
-// File @openzeppelin/contracts/introspection/ERC165.sol@v3.4.0
-
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.8.0;
 
 /**
- * @dev Implementation of the {IERC165} interface.
+ * @dev Interface of the optional ERC1155MetadataExtension interface, as defined
+ * in the https://eips.ethereum.org/EIPS/eip-1155#metadata-extensions[EIP].
  *
- * Contracts may inherit from this and call {_registerInterface} to declare
- * their support of an interface.
+ * _Available since v3.1._
  */
-abstract contract ERC165 is IERC165 {
-    /*
-     * bytes4(keccak256('supportsInterface(bytes4)')) == 0x01ffc9a7
-     */
-    bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
-
+interface IERC1155MetadataURI is IERC1155 {
     /**
-     * @dev Mapping of interface ids to whether or not it's supported.
+     * @dev Returns the URI for token type `id`.
+     *
+     * If the `\{id\}` substring is present in the URI, it must be replaced by
+     * clients with the actual token type ID.
      */
-    mapping(bytes4 => bool) private _supportedInterfaces;
-
-    constructor () internal {
-        // Derived contracts need only register support for their own interfaces,
-        // we register support for ERC165 itself here
-        _registerInterface(_INTERFACE_ID_ERC165);
-    }
-
-    /**
-     * @dev See {IERC165-supportsInterface}.
-     *
-     * Time complexity O(1), guaranteed to always use less than 30 000 gas.
-     */
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-        return _supportedInterfaces[interfaceId];
-    }
-
-    /**
-     * @dev Registers the contract as an implementer of the interface defined by
-     * `interfaceId`. Support of the actual ERC165 interface is automatic and
-     * registering its interface id is not required.
-     *
-     * See {IERC165-supportsInterface}.
-     *
-     * Requirements:
-     *
-     * - `interfaceId` cannot be the ERC165 invalid interface (`0xffffffff`).
-     */
-    function _registerInterface(bytes4 interfaceId) internal virtual {
-        require(interfaceId != 0xffffffff, "ERC165: invalid interface id");
-        _supportedInterfaces[interfaceId] = true;
-    }
+    function uri(uint256 id) external view returns (string memory);
 }
 
 
-// File @openzeppelin/contracts/math/SafeMath.sol@v3.4.0
+// File @openzeppelin/contracts/utils/Address.sol@v4.1.0
 
-pragma solidity >=0.6.0 <0.8.0;
-
-/**
- * @dev Wrappers over Solidity's arithmetic operations with added overflow
- * checks.
- *
- * Arithmetic operations in Solidity wrap on overflow. This can easily result
- * in bugs, because programmers usually assume that an overflow raises an
- * error, which is the standard behavior in high level programming languages.
- * `SafeMath` restores this intuition by reverting the transaction when an
- * operation overflows.
- *
- * Using this library instead of the unchecked operations eliminates an entire
- * class of bugs, so it's recommended to use it always.
- */
-library SafeMath {
-    /**
-     * @dev Returns the addition of two unsigned integers, with an overflow flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryAdd(uint256 a, uint256 b) internal pure returns (bool, uint256) {
-        uint256 c = a + b;
-        if (c < a) return (false, 0);
-        return (true, c);
-    }
-
-    /**
-     * @dev Returns the substraction of two unsigned integers, with an overflow flag.
-     *
-     * _Available since v3.4._
-     */
-    function trySub(uint256 a, uint256 b) internal pure returns (bool, uint256) {
-        if (b > a) return (false, 0);
-        return (true, a - b);
-    }
-
-    /**
-     * @dev Returns the multiplication of two unsigned integers, with an overflow flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryMul(uint256 a, uint256 b) internal pure returns (bool, uint256) {
-        // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
-        // benefit is lost if 'b' is also tested.
-        // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
-        if (a == 0) return (true, 0);
-        uint256 c = a * b;
-        if (c / a != b) return (false, 0);
-        return (true, c);
-    }
-
-    /**
-     * @dev Returns the division of two unsigned integers, with a division by zero flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryDiv(uint256 a, uint256 b) internal pure returns (bool, uint256) {
-        if (b == 0) return (false, 0);
-        return (true, a / b);
-    }
-
-    /**
-     * @dev Returns the remainder of dividing two unsigned integers, with a division by zero flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryMod(uint256 a, uint256 b) internal pure returns (bool, uint256) {
-        if (b == 0) return (false, 0);
-        return (true, a % b);
-    }
-
-    /**
-     * @dev Returns the addition of two unsigned integers, reverting on
-     * overflow.
-     *
-     * Counterpart to Solidity's `+` operator.
-     *
-     * Requirements:
-     *
-     * - Addition cannot overflow.
-     */
-    function add(uint256 a, uint256 b) internal pure returns (uint256) {
-        uint256 c = a + b;
-        require(c >= a, "SafeMath: addition overflow");
-        return c;
-    }
-
-    /**
-     * @dev Returns the subtraction of two unsigned integers, reverting on
-     * overflow (when the result is negative).
-     *
-     * Counterpart to Solidity's `-` operator.
-     *
-     * Requirements:
-     *
-     * - Subtraction cannot overflow.
-     */
-    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-        require(b <= a, "SafeMath: subtraction overflow");
-        return a - b;
-    }
-
-    /**
-     * @dev Returns the multiplication of two unsigned integers, reverting on
-     * overflow.
-     *
-     * Counterpart to Solidity's `*` operator.
-     *
-     * Requirements:
-     *
-     * - Multiplication cannot overflow.
-     */
-    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
-        if (a == 0) return 0;
-        uint256 c = a * b;
-        require(c / a == b, "SafeMath: multiplication overflow");
-        return c;
-    }
-
-    /**
-     * @dev Returns the integer division of two unsigned integers, reverting on
-     * division by zero. The result is rounded towards zero.
-     *
-     * Counterpart to Solidity's `/` operator. Note: this function uses a
-     * `revert` opcode (which leaves remaining gas untouched) while Solidity
-     * uses an invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function div(uint256 a, uint256 b) internal pure returns (uint256) {
-        require(b > 0, "SafeMath: division by zero");
-        return a / b;
-    }
-
-    /**
-     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
-     * reverting when dividing by zero.
-     *
-     * Counterpart to Solidity's `%` operator. This function uses a `revert`
-     * opcode (which leaves remaining gas untouched) while Solidity uses an
-     * invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
-        require(b > 0, "SafeMath: modulo by zero");
-        return a % b;
-    }
-
-    /**
-     * @dev Returns the subtraction of two unsigned integers, reverting with custom message on
-     * overflow (when the result is negative).
-     *
-     * CAUTION: This function is deprecated because it requires allocating memory for the error
-     * message unnecessarily. For custom revert reasons use {trySub}.
-     *
-     * Counterpart to Solidity's `-` operator.
-     *
-     * Requirements:
-     *
-     * - Subtraction cannot overflow.
-     */
-    function sub(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
-        require(b <= a, errorMessage);
-        return a - b;
-    }
-
-    /**
-     * @dev Returns the integer division of two unsigned integers, reverting with custom message on
-     * division by zero. The result is rounded towards zero.
-     *
-     * CAUTION: This function is deprecated because it requires allocating memory for the error
-     * message unnecessarily. For custom revert reasons use {tryDiv}.
-     *
-     * Counterpart to Solidity's `/` operator. Note: this function uses a
-     * `revert` opcode (which leaves remaining gas untouched) while Solidity
-     * uses an invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function div(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
-        require(b > 0, errorMessage);
-        return a / b;
-    }
-
-    /**
-     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
-     * reverting with custom message when dividing by zero.
-     *
-     * CAUTION: This function is deprecated because it requires allocating memory for the error
-     * message unnecessarily. For custom revert reasons use {tryMod}.
-     *
-     * Counterpart to Solidity's `%` operator. This function uses a `revert`
-     * opcode (which leaves remaining gas untouched) while Solidity uses an
-     * invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function mod(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
-        require(b > 0, errorMessage);
-        return a % b;
-    }
-}
-
-// File @openzeppelin/contracts/utils/Address.sol@v3.4.0
-
-pragma solidity >=0.6.2 <0.8.0;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Collection of functions related to the address type
@@ -693,12 +398,70 @@ library Address {
 }
 
 
-// File @openzeppelin/contracts/token/ERC1155/ERC1155.sol@v3.4.0
+// File @openzeppelin/contracts/utils/Context.sol@v4.1.0
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.8.0;
+
+/*
+ * @dev Provides information about the current execution context, including the
+ * sender of the transaction and its data. While these are generally available
+ * via msg.sender and msg.data, they should not be accessed in such a direct
+ * manner, since when dealing with meta-transactions the account sending and
+ * paying for execution may not be the actual sender (as far as an application
+ * is concerned).
+ *
+ * This contract is only required for intermediate, library-like contracts.
+ */
+abstract contract Context {
+    function _msgSender() internal view virtual returns (address) {
+        return msg.sender;
+    }
+
+    function _msgData() internal view virtual returns (bytes calldata) {
+        this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
+        return msg.data;
+    }
+}
+
+
+// File @openzeppelin/contracts/utils/introspection/ERC165.sol@v4.1.0
+
+pragma solidity ^0.8.0;
 
 /**
+ * @dev Implementation of the {IERC165} interface.
  *
+ * Contracts that want to implement ERC165 should inherit from this contract and override {supportsInterface} to check
+ * for the additional interface id that will be supported. For example:
+ *
+ * ```solidity
+ * function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
+ *     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);
+ * }
+ * ```
+ *
+ * Alternatively, {ERC165Storage} provides an easier to use but more expensive implementation.
+ */
+abstract contract ERC165 is IERC165 {
+    /**
+     * @dev See {IERC165-supportsInterface}.
+     */
+    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
+        return interfaceId == type(IERC165).interfaceId;
+    }
+}
+
+
+// File @openzeppelin/contracts/token/ERC1155/ERC1155.sol@v4.1.0
+
+pragma solidity ^0.8.0;
+
+
+
+
+
+
+/**
  * @dev Implementation of the basic standard multi-token.
  * See https://eips.ethereum.org/EIPS/eip-1155
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
@@ -706,7 +469,6 @@ pragma solidity >=0.6.0 <0.8.0;
  * _Available since v3.1._
  */
 contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
-    using SafeMath for uint256;
     using Address for address;
 
     // Mapping from token ID to account balances
@@ -718,35 +480,20 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     // Used as the URI for all token types by relying on ID substitution, e.g. https://token-cdn-domain/{id}.json
     string private _uri;
 
-    /*
-     *     bytes4(keccak256('balanceOf(address,uint256)')) == 0x00fdd58e
-     *     bytes4(keccak256('balanceOfBatch(address[],uint256[])')) == 0x4e1273f4
-     *     bytes4(keccak256('setApprovalForAll(address,bool)')) == 0xa22cb465
-     *     bytes4(keccak256('isApprovedForAll(address,address)')) == 0xe985e9c5
-     *     bytes4(keccak256('safeTransferFrom(address,address,uint256,uint256,bytes)')) == 0xf242432a
-     *     bytes4(keccak256('safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)')) == 0x2eb2c2d6
-     *
-     *     => 0x00fdd58e ^ 0x4e1273f4 ^ 0xa22cb465 ^
-     *        0xe985e9c5 ^ 0xf242432a ^ 0x2eb2c2d6 == 0xd9b67a26
-     */
-    bytes4 private constant _INTERFACE_ID_ERC1155 = 0xd9b67a26;
-
-    /*
-     *     bytes4(keccak256('uri(uint256)')) == 0x0e89341c
-     */
-    bytes4 private constant _INTERFACE_ID_ERC1155_METADATA_URI = 0x0e89341c;
-
     /**
      * @dev See {_setURI}.
      */
-    constructor (string memory uri_) public {
+    constructor (string memory uri_) {
         _setURI(uri_);
+    }
 
-        // register the supported interfaces to conform to ERC1155 via ERC165
-        _registerInterface(_INTERFACE_ID_ERC1155);
-
-        // register the supported interfaces to conform to ERC1155MetadataURI via ERC165
-        _registerInterface(_INTERFACE_ID_ERC1155_METADATA_URI);
+    /**
+     * @dev See {IERC165-supportsInterface}.
+     */
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
+        return interfaceId == type(IERC1155).interfaceId
+            || interfaceId == type(IERC1155MetadataURI).interfaceId
+            || super.supportsInterface(interfaceId);
     }
 
     /**
@@ -759,7 +506,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
      * Clients calling this function must replace the `\{id\}` substring with the
      * actual token type ID.
      */
-    function uri(uint256) external view virtual override returns (string memory) {
+    function uri(uint256) public view virtual override returns (string memory) {
         return _uri;
     }
 
@@ -844,8 +591,10 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
         _beforeTokenTransfer(operator, from, to, _asSingletonArray(id), _asSingletonArray(amount), data);
 
-        _balances[id][from] = _balances[id][from].sub(amount, "ERC1155: insufficient balance for transfer");
-        _balances[id][to] = _balances[id][to].add(amount);
+        uint256 fromBalance = _balances[id][from];
+        require(fromBalance >= amount, "ERC1155: insufficient balance for transfer");
+        _balances[id][from] = fromBalance - amount;
+        _balances[id][to] += amount;
 
         emit TransferSingle(operator, from, to, id, amount);
 
@@ -881,11 +630,10 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
             uint256 id = ids[i];
             uint256 amount = amounts[i];
 
-            _balances[id][from] = _balances[id][from].sub(
-                amount,
-                "ERC1155: insufficient balance for transfer"
-            );
-            _balances[id][to] = _balances[id][to].add(amount);
+            uint256 fromBalance = _balances[id][from];
+            require(fromBalance >= amount, "ERC1155: insufficient balance for transfer");
+            _balances[id][from] = fromBalance - amount;
+            _balances[id][to] += amount;
         }
 
         emit TransferBatch(operator, from, to, ids, amounts);
@@ -934,7 +682,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
         _beforeTokenTransfer(operator, address(0), account, _asSingletonArray(id), _asSingletonArray(amount), data);
 
-        _balances[id][account] = _balances[id][account].add(amount);
+        _balances[id][account] += amount;
         emit TransferSingle(operator, address(0), account, id, amount);
 
         _doSafeTransferAcceptanceCheck(operator, address(0), account, id, amount, data);
@@ -958,7 +706,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         _beforeTokenTransfer(operator, address(0), to, ids, amounts, data);
 
         for (uint i = 0; i < ids.length; i++) {
-            _balances[ids[i]][to] = amounts[i].add(_balances[ids[i]][to]);
+            _balances[ids[i]][to] += amounts[i];
         }
 
         emit TransferBatch(operator, address(0), to, ids, amounts);
@@ -981,10 +729,9 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
         _beforeTokenTransfer(operator, account, address(0), _asSingletonArray(id), _asSingletonArray(amount), "");
 
-        _balances[id][account] = _balances[id][account].sub(
-            amount,
-            "ERC1155: burn amount exceeds balance"
-        );
+        uint256 accountBalance = _balances[id][account];
+        require(accountBalance >= amount, "ERC1155: burn amount exceeds balance");
+        _balances[id][account] = accountBalance - amount;
 
         emit TransferSingle(operator, account, address(0), id, amount);
     }
@@ -1005,10 +752,12 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         _beforeTokenTransfer(operator, account, address(0), ids, amounts, "");
 
         for (uint i = 0; i < ids.length; i++) {
-            _balances[ids[i]][account] = _balances[ids[i]][account].sub(
-                amounts[i],
-                "ERC1155: burn amount exceeds balance"
-            );
+            uint256 id = ids[i];
+            uint256 amount = amounts[i];
+
+            uint256 accountBalance = _balances[id][account];
+            require(accountBalance >= amount, "ERC1155: burn amount exceeds balance");
+            _balances[id][account] = accountBalance - amount;
         }
 
         emit TransferBatch(operator, account, address(0), ids, amounts);
@@ -1103,7 +852,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
 // File contracts/ERC1155MetaTransactionMaticSample.sol
 
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.0;
 
 /**
  * https://github.com/maticnetwork/pos-portal/blob/master/contracts/common/ContextMixin.sol
@@ -1125,7 +874,7 @@ abstract contract ContextMixin {
                 )
             }
         } else {
-            sender = msg.sender;
+            sender = payable(msg.sender);
         }
         return sender;
     }
@@ -1192,7 +941,7 @@ contract EIP712Base is Initializable {
         return domainSeperator;
     }
 
-    function getChainId() public pure returns (uint256) {
+    function getChainId() public view returns (uint256) {
         uint256 id;
         assembly {
             id := chainid()
@@ -1223,7 +972,6 @@ contract EIP712Base is Initializable {
  * https://github.com/maticnetwork/pos-portal/blob/master/contracts/common/NativeMetaTransaction.sol
  */
 contract NativeMetaTransaction is EIP712Base {
-    using SafeMath for uint256;
     bytes32 private constant META_TRANSACTION_TYPEHASH = keccak256(
         bytes(
             "MetaTransaction(uint256 nonce,address from,bytes functionSignature)"
@@ -1266,11 +1014,11 @@ contract NativeMetaTransaction is EIP712Base {
         );
 
         // increase nonce for user (to avoid re-use)
-        nonces[userAddress] = nonces[userAddress].add(1);
+        nonces[userAddress] = nonces[userAddress] + 1;
 
         emit MetaTransactionExecuted(
             userAddress,
-            msg.sender,
+            payable(msg.sender),
             functionSignature
         );
 
@@ -1324,8 +1072,12 @@ contract NativeMetaTransaction is EIP712Base {
 
 contract ERC1155MetaTransactionMaticSample is ERC1155, ContextMixin, NativeMetaTransaction {
 
-    constructor (string memory uri_) ERC1155(uri_) {
-        _initializeEIP712(uri_);
+    // Contract name
+    string public name;
+
+    constructor (string memory name_, string memory uri_) ERC1155(uri_) {
+        name = name_;
+        _initializeEIP712(name);
     }
 
     /**
@@ -1335,7 +1087,7 @@ contract ERC1155MetaTransactionMaticSample is ERC1155, ContextMixin, NativeMetaT
         internal
         override
         view
-        returns (address payable sender)
+        returns (address sender)
     {
         return ContextMixin.msgSender();
     }
