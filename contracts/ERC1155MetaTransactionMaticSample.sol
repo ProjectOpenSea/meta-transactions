@@ -7,11 +7,7 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
  * https://github.com/maticnetwork/pos-portal/blob/master/contracts/common/ContextMixin.sol
  */
 abstract contract ContextMixin {
-    function msgSender()
-        internal
-        view
-        returns (address payable sender)
-    {
+    function msgSender() internal view returns (address payable sender) {
         if (msg.sender == address(this)) {
             bytes memory array = msg.data;
             uint256 index = msg.data.length;
@@ -53,29 +49,25 @@ contract EIP712Base is Initializable {
         bytes32 salt;
     }
 
-    string constant public ERC712_VERSION = "1";
+    string public constant ERC712_VERSION = "1";
 
-    bytes32 internal constant EIP712_DOMAIN_TYPEHASH = keccak256(
-        bytes(
-            "EIP712Domain(string name,string version,address verifyingContract,bytes32 salt)"
-        )
-    );
-    bytes32 internal domainSeperator;
+    bytes32 internal constant EIP712_DOMAIN_TYPEHASH =
+        keccak256(
+            bytes(
+                "EIP712Domain(string name,string version,address verifyingContract,bytes32 salt)"
+            )
+        );
+    bytes32 internal domainSeparator;
 
     // supposed to be called once while initializing.
     // one of the contractsa that inherits this contract follows proxy pattern
     // so it is not possible to do this in a constructor
-    function _initializeEIP712(
-        string memory name
-    )
-        internal
-        initializer
-    {
-        _setDomainSeperator(name);
+    function _initializeEIP712(string memory name) internal initializer {
+        _setDomainSeparator(name);
     }
 
-    function _setDomainSeperator(string memory name) internal {
-        domainSeperator = keccak256(
+    function _setDomainSeparator(string memory name) internal {
+        domainSeparator = keccak256(
             abi.encode(
                 EIP712_DOMAIN_TYPEHASH,
                 keccak256(bytes(name)),
@@ -86,8 +78,8 @@ contract EIP712Base is Initializable {
         );
     }
 
-    function getDomainSeperator() public view returns (bytes32) {
-        return domainSeperator;
+    function getDomainSeparator() public view returns (bytes32) {
+        return domainSeparator;
     }
 
     function getChainId() public view returns (uint256) {
@@ -112,7 +104,7 @@ contract EIP712Base is Initializable {
     {
         return
             keccak256(
-                abi.encodePacked("\x19\x01", getDomainSeperator(), messageHash)
+                abi.encodePacked("\x19\x01", getDomainSeparator(), messageHash)
             );
     }
 }
@@ -121,11 +113,12 @@ contract EIP712Base is Initializable {
  * https://github.com/maticnetwork/pos-portal/blob/master/contracts/common/NativeMetaTransaction.sol
  */
 contract NativeMetaTransaction is EIP712Base {
-    bytes32 private constant META_TRANSACTION_TYPEHASH = keccak256(
-        bytes(
-            "MetaTransaction(uint256 nonce,address from,bytes functionSignature)"
-        )
-    );
+    bytes32 private constant META_TRANSACTION_TYPEHASH =
+        keccak256(
+            bytes(
+                "MetaTransaction(uint256 nonce,address from,bytes functionSignature)"
+            )
+        );
     event MetaTransactionExecuted(
         address userAddress,
         address payable relayerAddress,
@@ -219,12 +212,15 @@ contract NativeMetaTransaction is EIP712Base {
     }
 }
 
-contract ERC1155MetaTransactionMaticSample is ERC1155, ContextMixin, NativeMetaTransaction {
-
+contract ERC1155MetaTransactionMaticSample is
+    ERC1155,
+    ContextMixin,
+    NativeMetaTransaction
+{
     // Contract name
     string public name;
 
-    constructor (string memory name_, string memory uri_) ERC1155(uri_) {
+    constructor(string memory name_, string memory uri_) ERC1155(uri_) {
         name = name_;
         _initializeEIP712(name);
     }
@@ -232,26 +228,23 @@ contract ERC1155MetaTransactionMaticSample is ERC1155, ContextMixin, NativeMetaT
     /**
      * This is used instead of msg.sender as transactions won't be sent by the original token owner, but by OpenSea.
      */
-    function _msgSender()
-        internal
-        override
-        view
-        returns (address sender)
-    {
+    function _msgSender() internal view override returns (address sender) {
         return ContextMixin.msgSender();
     }
 
     /**
-    * As another option for supporting trading without requiring meta transactions, override isApprovedForAll to whitelist OpenSea proxy accounts on Matic
-    */
-    function isApprovedForAll(
-        address _owner,
-        address _operator
-    ) public override view returns (bool isOperator) {
+     * As another option for supporting trading without requiring meta transactions, override isApprovedForAll to whitelist OpenSea proxy accounts on Matic
+     */
+    function isApprovedForAll(address _owner, address _operator)
+        public
+        view
+        override
+        returns (bool isOperator)
+    {
         if (_operator == address(0x207Fa8Df3a17D96Ca7EA4f2893fcdCb78a304101)) {
             return true;
         }
-        
+
         return ERC1155.isApprovedForAll(_owner, _operator);
     }
 }
